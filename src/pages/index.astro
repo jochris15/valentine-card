@@ -1,0 +1,121 @@
+---
+import { Image } from "astro:assets";
+import { getEntry } from "astro:content";
+import BaseLayout from "@/layouts/base.astro";
+import github from "@/assets/github.svg";
+
+const { data } = await getEntry("loves", "main");
+const {
+  title,
+  openingPhrase,
+  acceptedPhrase,
+  rejectionText,
+  acceptText,
+  pendingImage,
+  acceptedImage,
+} = data;
+---
+
+<script>
+  const main = document.getElementById("main") as HTMLDivElement;
+
+  const headerInitial = document.getElementById(
+    "header-initial",
+  ) as HTMLDivElement;
+  const headerYes = document.getElementById("header-yes") as HTMLDivElement;
+
+  const btnGroup = document.getElementById("button-group") as HTMLDivElement;
+  const btnYes = document.getElementById("btn-yes") as HTMLButtonElement;
+  const btnNo = document.getElementById("btn-no") as HTMLButtonElement;
+
+  let currentIndex = 0;
+  const arrTextButtonNo = main.dataset.rejectionText?.split(",") ?? [];
+
+  const toggleHeader = () => {
+    headerInitial.classList.add("hidden");
+
+    headerYes.classList.remove("hidden");
+    headerYes.classList.add("flex");
+
+    btnGroup.classList.add("hidden");
+
+    currentIndex = 0;
+    btnNo.textContent =
+      arrTextButtonNo[currentIndex % arrTextButtonNo.length] ?? "";
+  };
+
+  const loopButtonText = () => {
+    currentIndex += 1;
+    btnNo.textContent =
+      arrTextButtonNo[currentIndex % arrTextButtonNo.length] ?? "";
+
+    btnYes.style.padding = `${1 + currentIndex * 0.2}rem ${
+      1 + currentIndex * 0.4
+    }rem`;
+    btnYes.style.fontSize = `${3 + currentIndex * 0.2}rem`;
+  };
+
+  btnYes.addEventListener("click", toggleHeader);
+  btnNo.addEventListener("click", loopButtonText);
+</script>
+
+<BaseLayout title={title}>
+  <main
+    class="w-full min-h-dvh flex flex-col gap-4 items-center justify-center p-4 bg-primary"
+    id="main"
+    data-rejection-text={rejectionText}
+  >
+    <section
+      id="header-initial"
+      class="flex flex-col gap-4 items-center justify-center"
+    >
+      <Image
+        src={pendingImage}
+        alt={"Pending Image"}
+        class="opacity-75 pr-8 rounded-[2rem] mx-auto mt-5"
+      />
+         <h1 class="text-4xl font-primary m-5 text-primary-mono">{openingPhrase}</h1>
+    </section>
+
+    <section
+      id="header-yes"
+      class="flex-col gap-4 items-center justify-center hidden"
+    >
+      <Image
+        src={acceptedImage}
+        alt="Accepted Image"
+        class="opacity-75 rounded-[2rem] mx-auto mt-5"
+      />
+            <h1 class="text-4xl font-primary m-5 text-primary-mono">{acceptedPhrase}</h1>
+    </section>
+
+    <section id="button-group" class="font-secondary">
+      <button
+        id="btn-yes"
+        class="text-3xl py-2 px-8 rounded-xl bg-secondary hover:bg-secondary-mono transition-colors duration-300 text-primary"
+        >{acceptText}</button
+      >
+      <button
+        id="btn-no"
+        class="text-3xl py-2 px-8 rounded-xl bg-tertiary hover:bg-tertiary-mono transition-colors duration-300 text-primary"
+        >{rejectionText[0]}</button
+      >
+    </section>
+
+    <section id="footer">
+      <a
+        href="https://github.com/withered-flowers/apps-valentine-showcase"
+        class="m-5 text-primary-mono transition-colors duration-300 flex gap-2 items-center justify-center bg-secondary-mono hover:bg-tertiary-mono hover:text-black px-3 py-2 text-sm rounded-xl"
+      >
+        <Image
+          src={github}
+          alt="Github"
+          densities={[1]}
+          class="w-8 h-8 opacity-50"
+        />
+        <span class="text-black opacity-50 font-sans">Github (Source Code)</span
+        >
+      </a>
+    </section>
+  </main>
+</BaseLayout>
