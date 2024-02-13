@@ -18,10 +18,6 @@ const {
 ---
 
 <script>
-  window.onload = function () {
-        document.querySelector("video").muted = false;
-  }
-  
   const main = document.getElementById("main") as HTMLDivElement;
 
   const headerInitial = document.getElementById(
@@ -36,6 +32,8 @@ const {
   let currentIndex = 0;
   const arrTextButtonNo = main.dataset.rejectionText?.split(",") ?? [];
 
+  const audioPlayer = document.getElementById("uwu") as HTMLAudioElement;
+
   const toggleHeader = () => {
     headerInitial.classList.add("hidden");
 
@@ -43,6 +41,8 @@ const {
     headerYes.classList.add("flex");
 
     btnGroup.classList.add("hidden");
+
+    audioPlayer.play();
 
     currentIndex = 0;
     btnNo.textContent =
@@ -123,8 +123,8 @@ const {
       </a>
     </section>
 
-    <video autoplay loop muted>
+    <audio loop id="uwu">
       <source src={audio} />
-    </video>
+    </audio>
   </main>
 </BaseLayout>
