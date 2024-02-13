@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import { getEntry } from "astro:content";
 import BaseLayout from "@/layouts/base.astro";
 import github from "@/assets/github.svg";
+import audio from "./_uwu.mp3"
 
 const { data } = await getEntry("loves", "main");
 const {
@@ -117,5 +118,9 @@ const {
         >
       </a>
     </section>
+
+    <audio controls autoplay hidden>
+      <source src={audio} type="audio/mpeg">
+    </audio>
   </main>
 </BaseLayout>
