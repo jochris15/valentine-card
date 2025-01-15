@@ -1,9 +1,5 @@
 # Project Valentine Apps
 
-## Demo Website
-
-- https://valentine-tifa.vercel.app
-
 ## Description
 
 A website for your valentine ~
